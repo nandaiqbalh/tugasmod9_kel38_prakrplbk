@@ -87,5 +87,21 @@ namespace ApiKel38.Controllers
 
             return NoContent();
         }
+
+        [HttpPost("login")]
+        public ActionResult<string> Login([FromBody] UserDTO loginDTO)
+        {
+            if (loginDTO == null)
+                return BadRequest();
+
+            var user = UserStore.userList.FirstOrDefault(u =>
+                u.Username.ToLower() == loginDTO.Username.ToLower() &&
+                u.Password == loginDTO.Password);
+
+            if (user == null)
+                return NotFound("Invalid username or password");
+
+            return Ok("Login successful");
+        }
     }
 }
